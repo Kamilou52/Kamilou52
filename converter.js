@@ -38,9 +38,28 @@ function askValue() {
     var answer = window.prompt("Your value Please:");
     return answer;
 }
-
 // Main:
 // -continue while the user wants to convert something
 // -Check which conversion
 // -Get the value
 // -Display the result
+   
+while(askContinue()) {
+    var conversionType = guessTypeconversion();
+    var conversionValue = askValue();
+    var resultMessage = "The result is ";
+    var result = 0;
+
+    if (conversionType == "gn$") {
+    resultMessage += gn$ToCHF(Number(conversionValue)).toString();
+    } else if (conversionType== "celsius") {
+            resultMessage += celsiusToFarenheit(Number(conversionValue)).toString();
+        
+    } else if (conversionType == "liters") {
+            resultMessage += litersToGallons(Number(conversionValue)).toString();
+        
+    } else {(resultMessage == "Sorry. I can't do this coversion.");
+    
+    }
+        console.log(resultMessage);
+    }
