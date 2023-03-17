@@ -20,7 +20,7 @@ function litersToGallons(liters) {
 // func: Ask if the user wants to convert something
 function askContinue(){
     var answer = window.prompt("Do you want to convert a value?(Yes/No)");
-    if (answer == "Yes") {
+    if (answer.toUpperCase() == "YES") {
         return true;
     }   else {
         return false;
