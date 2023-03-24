@@ -2,7 +2,7 @@ def portfeescalculator():
     user_command = input("Your command amount please ? : ")
     country = input("Delevery country? (CH, FR, DE, AU, autre) : ")
     devise = "CH, FR, DE, AU, autre"
-    # fees = int(user_command) + " %"
+
     try:
         command = int(user_command)
     except:
