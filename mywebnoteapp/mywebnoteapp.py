@@ -1,29 +1,6 @@
-from flask import Flask, render_template
-app = Flask('mywebnoteapp')
-# note = input("Your note :")
-
-@app.route('/')
-def home_page():
-    conn = get_db_connection()
-    notes = conn.execute('SELECT * FROM notes').fetchall()
-    conn.close()
-    return render_template('indexwebnoteapp.html', notes=notes)
-
-import sqlite3
-from flask import Flask, render_template
-
 import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
-
-
-from flask import Flask, render_template
-
-#  try:
-#         note for notes
-#     except:
-#         print("Try again, You haven't yet a number!")
-#         quit()
 
 def get_db_connection():
     conn = sqlite3.connect('static/notes.db')
@@ -39,9 +16,6 @@ def get_note(notes_id):
         abort(404)
     return note
 
-
-from flask import Flask, render_template, url_for, request, redirect
-
 app = Flask("mywebnoteapp")
 
 @app.route('/')
@@ -51,7 +25,7 @@ def home_page():
     conn.close()
     return render_template('indexwebnoteapp.html', notes=notes)
 
-@app.route("/username", methods=[ "GET", "POST" ])
+@app.route("/username", methods=[ "GET", "NOTE" ])
 def username():
    return render_template("username.html", user = request.args["user_name"])
 
@@ -63,14 +37,10 @@ def add_note():
 def create():
     return render_template('create.html')
 
-@app.route("/edit")
-def editnote():
-    return render_template("edit.html")
-
-@app.route('/<int:id>/edit', methods=('GET', 'POST'))
+@app.route('/<int:id>/edit', methods=('GET', 'NOTE'))
 def edit(id):
-    # note = get_note(id)
-    if request.method == '':
+    note = get_note(id)
+    if request.method == 'NOTE':
         note = request.form['note']
         content = request.form['content']
 
@@ -84,9 +54,9 @@ def edit(id):
             conn.commit()
             conn.close()
             return redirect(url_for('indexwebnoteapp'))
-    return render_template("edit.html")
+    return render_template("edit.html",note=note)
 
-@app.route('/<int:id>/delete', methods=('',))
+@app.route('/<int:id>/delete', methods=('GET', 'NOTE'))
 def delete(id):
     note = get_note(id)
     conn = get_db_connection()
@@ -94,12 +64,7 @@ def delete(id):
     conn.commit()
     conn.close()
     flash('"{}" was successfully deleted!'.format(note['content']))
-    return redirect(url_for('indexwebnoteapp'))
-
-@app.route("/getnote")
-def get_note():
-    return render_template("getnote.html")
-
+    return redirect(url_for('indexwebnoteap'))
 
 @app.route("/seenotes")
 def seenotes():
