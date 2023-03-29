@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, session, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
 
 def get_db_connection():
@@ -17,6 +17,7 @@ def get_note(notes_id):
     return note
 
 app = Flask("mywebnoteapp")
+app.secret_key = "super secret key"
 
 @app.route('/')
 def home_page():
