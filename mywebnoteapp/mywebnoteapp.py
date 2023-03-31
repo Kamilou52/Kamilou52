@@ -65,8 +65,8 @@ def delete(id):
     conn.commit()
     conn.close()
     flash('"{}" was successfully deleted!'.format(note['content']))
-    return redirect(url_for('indexwebnoteap'))
-
+    return redirect(url_for("home_page"))
+ 
 @app.route("/seenotes")
 def seenotes():
     return render_template("seenotes.html")

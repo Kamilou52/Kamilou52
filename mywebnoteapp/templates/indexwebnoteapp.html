@@ -9,6 +9,8 @@
     <span class="badge badge-primary">{{ note['created'] }}</span>
     <a href="{{ url_for('edit', id=note[0]) }}">
         <span class="badge badge-warning"><i class="fa fa-edit"></i>Edit note</span>
+    </a>
+    <a href="{{ url_for('delete', id=note[0]) }}">
         <span class="badge badge-warning"><i class="fa fa-trash"></i>Delete note</span>
     </a>
         <div style="padding: 10px; background-color: #EEE; margin: 20px">
