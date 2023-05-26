@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add note</title>
-</head>
-<body>
+
+{% extends 'base.html' %}
+
+    {% block content %}
     <h1>{{user}}</h1>
 
-
 <h1>Modify a note</h1>
-
 <form method="Note">
     <div class="form-group">
         <label for="note">Note</label>
@@ -26,9 +21,5 @@
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
-    <div>
-        <p><a href="base.html">Go back</a>
-    </div>
+    {% endblock %}
 </form>
-</body>
-</html>

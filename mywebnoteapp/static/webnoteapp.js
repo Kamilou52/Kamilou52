@@ -75,3 +75,32 @@ function storename() {
         location.href="/";    
     
         }
+
+// const notes = ['notes:shema.sql', ];
+// const para = document.querySelector('p');
+// const input = document.querySelector('input');
+// const bouton = document.querySelector('button');
+
+// bouton.addEventListener('click', function() {
+//   let searchnote = input.title;
+//   input.value = '';
+//   input.focus();
+//   for (let i = 0; i < notes.length; i++) {
+//     let splitnote = notes[i].split(':');
+//     if (splitnote[0] === searchnote) {
+//       para.textTitle = splitnote[0] + '\'s title is ' + splitnote[1] + '.';
+//       break;
+//     } else {
+//       para.textTitle = 'Note is not found.';
+//     }
+//   }
+// });
+
+const output = document.querySelector('.output');
+output.innerHTML = '';
+
+let i = 4;
+
+const para = document.createElement('p');
+para.textTitle = DataTransfer ;
+output.appendChild(para);

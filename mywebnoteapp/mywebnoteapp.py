@@ -14,7 +14,7 @@ def get_note(notes_id):
     conn.close()
     if note is None:
         abort(404)
-    return note
+    return notes_id
 
 def add_notes(title , desc):
     conn = get_db_connection()
@@ -30,6 +30,16 @@ def add_notes(title , desc):
     if note is None:
         abort(404)
     return note
+
+def search_notes(title):
+     conn = get_db_connection()
+     filtre ='%'+title+"%"
+     note = conn.execute('SELECT * FROM notes WHERE title like ?', [filtre,]).fetchall()
+     conn.close()
+     if note is None:
+         abort(404)
+         
+     return note
 
 app = Flask("mywebnoteapp")
 app.secret_key = "super secret key"
@@ -48,7 +58,7 @@ def username():
 @app.route("/add_Note",  methods=[ "GET", "POST" ])
 def add_Note():
     if request.method=="POST":
-        title = request.form["note"]
+        title = request.form["title"]
         desc = request.form["content"]
         add_notes(title,desc)
        
@@ -60,47 +70,56 @@ def add_Note():
 def create():
     return render_template('create.html')
 
-@app.route('/<int:id>/edit', methods=('GET', 'NOTE'))
+@app.route('/<int:id>/edit', methods=('GET', 'POST'))
 def edit(id):
     note = get_note(id)
-    if request.method == 'NOTE':
-        note = request.form['note']
+    if request.method == 'POST':
+        title = request.form['title']
         content = request.form['content']
 
-        if not note:
-            flash('Note is required!')
+        if not title:
+            flash('title is required!')
         else:
             conn = get_db_connection()
-            conn.execute('UPDATE notes SET note = ?, content = ?'
+            conn.execute('UPDATE posts SET title = ?, content = ?'
                          ' WHERE id = ?',
-                         (note, content, id))
+                         (title, content, id))
             conn.commit()
             conn.close()
             return redirect(url_for('indexwebnoteapp'))
-    return render_template("edit.html",note=note)
+    return render_template("edit.html", note=note)
 
 @app.route("/note", methods=["GET", "POST"])
 def notes():
     notes = add_Note.query.all()
     return render_template("note.html", notes=notes)
 
-@app.route('/<int:id>/delete', methods=('GET', 'NOTE'))
+@app.route('/<int:id>/delete', methods=('GET', 'POST'))
 def delete(id):
     note = get_note(id)
     conn = get_db_connection()
     conn.execute('DELETE FROM notes WHERE id = ?', (id,))
     conn.commit()
     conn.close()
-    flash('"{}" was successfully deleted!'.format(note['content']))
+    # flash('"{}" was successfully deleted!'.format(note['content']))
     return redirect(url_for("home_page"))
  
 @app.route("/seenotes")
 def seenotes():
+    
     return render_template("seenotes.html")
 
-@app.route("/search")
+
+    
+@app.route("/search", methods=[ "GET", "POST" ])
 def search():
-    return render_template("search.html")
+    if request.method=="POST":
+        title = request.form["search"]
+        notes = search_notes(title)
+        return render_template("indexwebnoteapp.html",notes=notes)
+    
+    return render_template("search.html")    
+             
     
 @app.route("/modifynotes")
 def modifynote():
