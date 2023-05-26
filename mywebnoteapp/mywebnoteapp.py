@@ -16,6 +16,21 @@ def get_note(notes_id):
         abort(404)
     return note
 
+def add_notes(title , desc):
+    conn = get_db_connection()
+    
+    data=[title, desc]
+    
+    note = conn.execute('insert into notes (title, content ,created ) values (?,?,datetime())', data)
+    print (note)
+    
+    conn.commit()
+    
+    conn.close()
+    if note is None:
+        abort(404)
+    return note
+
 app = Flask("mywebnoteapp")
 app.secret_key = "super secret key"
 
@@ -26,13 +41,20 @@ def home_page():
     conn.close()
     return render_template('indexwebnoteapp.html', notes=notes)
 
-@app.route("/username", methods=[ "GET", "NOTE" ])
+@app.route("/username", methods=[ "GET", "POST" ])
 def username():
    return render_template("username.html", user = request.args["user_name"])
 
-@app.route("/add_Note")
-def add_note():
-   return render_template("add_Note.html")
+@app.route("/add_Note",  methods=[ "GET", "POST" ])
+def add_Note():
+    if request.method=="POST":
+        title = request.form["note"]
+        desc = request.form["content"]
+        add_notes(title,desc)
+       
+        return home_page()
+
+    return render_template("add_Note.html")
 
 @app.route('/create', methods=('GET', 'NOTE'))
 def create():
@@ -56,6 +78,11 @@ def edit(id):
             conn.close()
             return redirect(url_for('indexwebnoteapp'))
     return render_template("edit.html",note=note)
+
+@app.route("/note", methods=["GET", "POST"])
+def notes():
+    notes = add_Note.query.all()
+    return render_template("note.html", notes=notes)
 
 @app.route('/<int:id>/delete', methods=('GET', 'NOTE'))
 def delete(id):
@@ -86,6 +113,8 @@ def rechernote():
 @app.route("/create")
 def createnote():
     return render_template("create.html")
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
