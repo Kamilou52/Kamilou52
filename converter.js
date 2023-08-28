@@ -58,7 +58,7 @@ while(askContinue()) {
     } else if (conversionType == "liters") {
             resultMessage += litersToGallons(Number(conversionValue)).toString();
         
-    } else {(resultMessage == "Sorry. I can't do this coversion.");
+    } else {(resultMessage == "Sorry. I can't do this conversion.");
     
     }
         console.log(resultMessage);
